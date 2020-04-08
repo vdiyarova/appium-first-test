@@ -34,6 +34,8 @@ public class FirstTest {
         driver.quit();
     }
 
+    //Tests
+
     @Test
     public void firstTest(){
         waitForElementAndClick(
@@ -149,6 +151,57 @@ public class FirstTest {
         );
     }
 
+    @Test
+    public void testSearchCancel() {
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/search_container"),
+                "Cannot find 'Search Wikipedia' input",
+                5
+        );
+
+        waitForElementAndSendKeys(
+                By.xpath("//*[contains(@text, 'Search…')]"),
+                "Java",
+                "Cannot find search input",
+                5
+        );
+
+        waitForElementPresent(
+                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='Island of Indonesia']"),
+                "Cannot find 'Island of Indonesia' topic searching by 'Java'",
+                15
+        );
+
+        waitForElementPresent(
+                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='Programming language']"),
+                "Cannot find 'Programming language' topic searching by 'Java'",
+                15
+        );
+
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/search_close_btn"),
+                "Cannot find 'Cancel' button",
+                5
+        );
+
+        Boolean secondResultNotPresent = waitForElementNotPresent(
+                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='Programming language']"),
+                "'Programming language' is still present on the page",
+                5
+        );
+
+        Boolean firstResultNotPresent = waitForElementNotPresent(
+                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='Island of Indonesia']"),
+                "'Island of Indonesia' is still present on the page",
+                5
+        );
+
+        Assert.assertTrue("Search results still present", firstResultNotPresent & secondResultNotPresent);
+    }
+
+
+    // Methods
+
     private WebElement waitForElementPresent(By by, String error_message, long timeoutInSecond){
         WebDriverWait wait = new WebDriverWait(driver, timeoutInSecond);
         wait.withMessage(error_message + "\n");
@@ -157,23 +210,23 @@ public class FirstTest {
         );
     }
 
-    private WebElement waitForElementPresent(By by, String error_message){
+    private WebElement waitForElementPresent(By by, String error_message) {
         return waitForElementPresent(by, error_message, 5);
     }
 
-    private WebElement waitForElementAndClick(By by, String error_message, long timeoutInSeconds){
+    private WebElement waitForElementAndClick(By by, String error_message, long timeoutInSeconds) {
         WebElement element = waitForElementPresent(by, error_message, timeoutInSeconds);
         element.click();
         return element;
     }
 
-    private WebElement waitForElementAndSendKeys(By by,String value, String error_message, long timeoutInSeconds){
+    private WebElement waitForElementAndSendKeys(By by, String value, String error_message, long timeoutInSeconds) {
         WebElement element = waitForElementPresent(by, error_message, timeoutInSeconds);
         element.sendKeys(value);
         return element;
     }
 
-    private boolean waitForElementNotPesent(By by, String error_message, long timeoutInSeconds){
+    private boolean waitForElementNotPresent(By by, String error_message, long timeoutInSeconds) {
         WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
         wait.withMessage(error_message + "\n");
         return wait.until(
@@ -182,7 +235,7 @@ public class FirstTest {
 
     }
 
-    private WebElement waitForElementAndClear(By by, String error_message, long timeoutInSeconds){
+    private WebElement waitForElementAndClear(By by, String error_message, long timeoutInSeconds) {
         WebElement element = waitForElementPresent(by, error_message, timeoutInSeconds);
         element.clear();
         return element;
