@@ -126,6 +126,29 @@ public class FirstTest {
         );
     }
 
+    @Test
+    public void testCompareInputSearchText(){
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/search_container"),
+                "Cannot find 'Search Wikipedia' input",
+                5
+        );
+
+        WebElement input_search = waitForElementPresent(
+                By.id("org.wikipedia:id/search_src_text"),
+                "Cannot find article title",
+                15
+        );
+
+        String input_search_text = input_search.getAttribute("text");
+
+        Assert.assertEquals(
+                "Text 'Search…' is missing in the input",
+                "Search…",
+                input_search_text
+        );
+    }
+
     private WebElement waitForElementPresent(By by, String error_message, long timeoutInSecond){
         WebDriverWait wait = new WebDriverWait(driver, timeoutInSecond);
         wait.withMessage(error_message + "\n");
