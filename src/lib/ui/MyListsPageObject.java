@@ -58,4 +58,13 @@ public class MyListsPageObject extends MainPageObject{
                 5
         );
     }
+
+    public void openArticleByTitle(String article_title){
+        String article_title_xpath = getArticleTitleXpath(article_title);
+        this.waitForElementAndClick(
+                By.xpath(article_title_xpath),
+                "Cannot find saved article 'JavaScript' ",
+                15
+        );
+    }
 }

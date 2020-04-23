@@ -15,6 +15,19 @@ public class SearchTests extends CoreTestCase {
     }
 
     @Test
+    public void testCompareInputSearchText() {
+        SearchPageObject SearchPageObject = new SearchPageObject(driver);
+        SearchPageObject.initSearchInput();
+        String input_search_text = SearchPageObject.getInputSearchText();
+
+        assertEquals(
+                "Text 'Search…' is missing in the input",
+                "Search…",
+                input_search_text
+        );
+    }
+
+    @Test
     public void testCloseSearch() {
         SearchPageObject SearchPageObject = new SearchPageObject(driver);
 
@@ -45,6 +58,18 @@ public class SearchTests extends CoreTestCase {
         String search_line = "dfgdfhdhgj";
         SearchPageObject.typeSearchLine(search_line);
         SearchPageObject.waitForEmptyResultsLabel();
+        SearchPageObject.assertThereIsNoResultOfSearch();
+    }
+
+    @Test
+    public void testSearchCancel() {
+        SearchPageObject SearchPageObject = new SearchPageObject(driver);
+
+        SearchPageObject.initSearchInput();
+        SearchPageObject.typeSearchLine("Java");
+        SearchPageObject.waitForSearchResult("Island of Indonesia");
+        SearchPageObject.waitForSearchResult("Object-oriented programming language");
+        SearchPageObject.clickCancelSearch();
         SearchPageObject.assertThereIsNoResultOfSearch();
     }
 

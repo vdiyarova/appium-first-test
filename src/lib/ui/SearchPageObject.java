@@ -2,6 +2,7 @@ package lib.ui;
 
 import io.appium.java_client.AppiumDriver;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 
 public class SearchPageObject extends MainPageObject {
     private static final String
@@ -10,7 +11,8 @@ public class SearchPageObject extends MainPageObject {
             SEARCH_RESULT_BY_SUBSTRING_TPL = "//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='{SUBSTRING}']",
             SEARCH_CANCEL_BUTTON = "org.wikipedia:id/search_close_btn",
             SEARCH_RESULT_ELEMENT = "//*[@resource-id='org.wikipedia:id/search_results_list']/*[@resource-id='org.wikipedia:id/page_list_item_container']",
-            EMPTY_RESULT_LABEL = "//*[contains(@text, 'No results found')]";
+            EMPTY_RESULT_LABEL = "//*[contains(@text, 'No results found')]",
+            SEARCH_INPUT_TEXT = "org.wikipedia:id/search_src_text";
 
     public SearchPageObject(AppiumDriver driver)
     {
@@ -108,5 +110,16 @@ public class SearchPageObject extends MainPageObject {
                 By.xpath(SEARCH_RESULT_ELEMENT),
                 "We supposed not find any results"
         );
+    }
+
+    public WebElement waitForInputSearchText(){
+        return this.waitForElementPresent(
+                By.id(SEARCH_INPUT_TEXT),
+                "Cannot find element 'Search...'"
+        );
+    }
+
+    public String getInputSearchText(){
+        return waitForInputSearchText().getAttribute("text");
     }
 }
