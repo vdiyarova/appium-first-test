@@ -5,6 +5,8 @@ import lib.ui.ArticlePageObject;
 import lib.ui.SearchPageObject;
 import org.junit.Test;
 
+import java.time.Duration;
+
 public class ChangeAppConditionTests extends CoreTestCase {
     @Test
     public void testChangeScreenOrientationOnSearchResult(){
@@ -40,7 +42,7 @@ public class ChangeAppConditionTests extends CoreTestCase {
         SearchPageObject.initSearchInput();
         SearchPageObject.typeSearchLine("Java");
         SearchPageObject.waitForSearchResult("Object-oriented programming language");
-        this.backgroundApp(2);
+        this.backgroundApp(Duration.ofSeconds(2));
         SearchPageObject.waitForSearchResult("Object-oriented programming language");
     }
 }
